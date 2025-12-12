@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharmaake - School Management System</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --gray: #95a5a6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--secondary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info span {
+            margin-right: 15px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: var(--gray);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        /* Navigation Styles */
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .nav-tabs {
+            display: flex;
+            list-style: none;
+            overflow-x: auto;
+        }
+        
+        .nav-tabs li {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+        
+        .nav-tabs li.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .nav-tabs li:hover:not(.active) {
+            background-color: var(--light);
+        }
+        
+        /* Main Content Styles */
+        main {
+            padding: 30px 0;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light);
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--secondary);
+        }
+        
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light);
+        }
+        
+        table th {
+            background-color: var(--light);
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        /* Attendance Styles */
+        .attendance-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .attendance-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-present {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--success);
+        }
+        
+        .status-absent {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--danger);
+        }
+        
+        .status-late {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: var(--warning);
+        }
+        
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        .login-box {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--secondary);
+        }
+        
+        .role-selector {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+        
+        .role-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .role-option.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+            
+            table {
+                font-size: 0.9rem;
+            }
+            
+            table th, table td {
+                padding: 8px 10px;
+            }
+        }
+        
+        /* Hidden class for toggling content */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-page" class="login-container">
+        <div class="login-box">
+            <h2 class="login-title">EduManage</h2>
+            <div class="role-selector">
+                <div class="role-option active" data-role="admin">Administrator</div>
+                <div class="role-option" data-role="teacher">Teacher</div>
+                <div class="role-option" data-role="student">Student</div>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" class="form-control" placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Enter your password">
+            </div>
+            <button id="login-btn" class="btn btn-primary" style="width: 100%;">Login</button>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app" class="hidden">
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <i>📚</i> EduManage
+                    </div>
+                    <div class="user-info">
+                        <span id="user-role-display">Administrator</span>
+                        <span id="user-name-display">Ms. Davis</span>
+                        <button id="logout-btn" class="btn btn-secondary">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <nav>
+            <div class="container">
+                <ul class="nav-tabs">
+                    <li class="active" data-tab="dashboard">Dashboard</li>
+                    <li data-tab="users" class="admin-only">User Management</li>
+                    <li data-tab="classes" class="admin-only">Class Management</li>
+                    <li data-tab="attendance" class="teacher-only">Attendance</li>
+                    <li data-tab="gradebook" class="teacher-only">Gradebook</li>
+                    <li data-tab="my-schedule" class="student-only">My Schedule</li>
+                    <li data-tab="my-grades" class="student-only">My Grades</li>
+                    <li data-tab="my-attendance" class="student-only">My Attendance</li>
+                </ul>
+            </div>
+        </nav>
+
+        <main>
+            <div class="container">
+                <!-- Dashboard Section -->
+                <section id="dashboard-section" class="tab-content">
+                    <h2>Dashboard</h2>
+                    <div class="dashboard">
+                        <div class="card">
+                            <h3>Total Students</h3>
+                            <div class="number" id="student-count">245</div>
+                        </div>
+                        <div class="card">
+                            <h3>Total Teachers</h3>
+                            <div class="number" id="teacher-count">18</div>
+                        </div>
+                        <div class="card">
+                            <h3>Total Classes</h3>
+                            <div class="number" id="class-count">12</div>
+                        </div>
+                        <div class="card">
+                            <h3>Today's Attendance</h3>
+                            <div class="number">94%</div>
+                        </div>
+                    </div>
+
+                    <!-- Admin Dashboard Content -->
+                    <div id="admin-dashboard" class="admin-only">
+                        <div class="section">
+                            <div class="section-header">
+                                <h3 class="section-title">Recent Activity</h3>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Activity</th>
+                                        <th>User</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2023-10-15</td>
+                                        <td>New student enrolled</td>
+                                        <td>Ms. Davis</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2023-10-14</td>
+                                        <td>New class created</td>
+                                        <td>Ms. Davis</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2023-10-13</td>
+                                        <td>Teacher account added</td>
+                                        <td>Ms. Davis</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Dashboard Content -->
+                    <div id="teacher-dashboard" class="teacher-only hidden">
+                        <div class="section">
+                            <div class="section-header">
+                                <h3 class="section-title">My Classes</h3>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Class</th>
+                                        <th>Subject</th>
+                                        <th>Students</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Grade 10-A</td>
+                                        <td>History</td>
+                                        <td>24</td>
+                                        <td><button class="btn btn-primary">View Details</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Grade 9-B</td>
+                                        <td>History</td>
+                                        <td>22</td>
+                                        <td><button class="btn btn-primary">View Details</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Student Dashboard Content -->
+                    <div id="student-dashboard" class="student-only hidden">
+                        <div class="section">
+                            <div class="section-header">
+                                <h3 class="section-title">My Information</h3>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div>
+                                    <h4>Personal Details</h4>
+                                    <p><strong>Name:</strong> Alex Johnson</p>
+                                    <p><strong>Grade:</strong> 10</p>
+                                    <p><strong>Student ID:</strong> S100245</p>
+                                </div>
+                                <div>
+                                    <h4>Academic Summary</h4>
+                                    <p><strong>Overall Average:</strong> 87%</p>
+                                    <p><strong>Attendance Rate:</strong> 96%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- User Management Section (Admin Only) -->
+                <section id="users-section" class="tab-content hidden admin-only">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">User Management</h2>
+                            <button class="btn btn-primary" id="add-user-btn">Add User</button>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>T001</td>
+                                    <td>Mr. Carter</td>
+                                    <td>Teacher</td>
+                                    <td>carter@school.edu</td>
+                                    <td><span class="attendance-status status-present">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-secondary">Edit</button>
+                                        <button class="btn btn-secondary">Deactivate</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>S100245</td>
+                                    <td>Alex Johnson</td>
+                                    <td>Student</td>
+                                    <td>alex.johnson@school.edu</td>
+                                    <td><span class="attendance-status status-present">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-secondary">Edit</button>
+                                        <button class="btn btn-secondary">Deactivate</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Class Management Section (Admin Only) -->
+                <section id="classes-section" class="tab-content hidden admin-only">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Class Management</h2>
+                            <button class="btn btn-primary" id="add-class-btn">Add Class</button>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Class ID</th>
+                                    <th>Class Name</th>
+                                    <th>Subject</th>
+                                    <th>Teacher</th>
+                                    <th>Students</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>CLS001</td>
+                                    <td>Grade 10-A</td>
+                                    <td>History</td>
+                                    <td>Mr. Carter</td>
+                                    <td>24</td>
+                                    <td>
+                                        <button class="btn btn-secondary">Edit</button>
+                                        <button class="btn btn-primary">View Students</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>CLS002</td>
+                                    <td>Grade 9-B</td>
+                                    <td>Mathematics</td>
+                                    <td>Ms. Roberts</td>
+                                    <td>22</td>
+                                    <td>
+                                        <button class="btn btn-secondary">Edit</button>
+                                        <button class="btn btn-primary">View Students</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Attendance Section (Teacher Only) -->
+                <section id="attendance-section" class="tab-content hidden teacher-only">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Attendance Management</h2>
+                            <div>
+                                <select id="class-select" class="form-control" style="width: auto; display: inline-block;">
+                                    <option>Grade 10-A - History</option>
+                                    <option>Grade 9-B - History</option>
+                                </select>
+                                <input type="date" id="attendance-date" class="form-control" style="width: auto; display: inline-block;">
+                            </div>
+                        </div>
+                        
+                        <div class="attendance-actions">
+                            <button class="btn btn-primary" id="mark-all-present">Mark All Present</button>
+                            <button class="btn btn-secondary" id="save-attendance">Save Attendance</button>
+                        </div>
+                        
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Student Name</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>S100245</td>
+                                    <td>Alex Johnson</td>
+                                    <td>
+                                        <select class="form-control attendance-status-select">
+                                            <option value="present">Present</option>
+                                            <option value="absent">Absent</option>
+                                            <option value="late">Late</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-secondary">View History</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>S100246</td>
+                                    <td>Maria Garcia</td>
+                                    <td>
+                                        <select class="form-control attendance-status-select">
+                                            <option value="present">Present</option>
+                                            <option value="absent">Absent</option>
+                                            <option value="late">Late</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-secondary">View History</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Gradebook Section (Teacher Only) -->
+                <section id="gradebook-section" class="tab-content hidden teacher-only">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Gradebook</h2>
+                            <div>
+                                <select id="grade-class-select" class="form-control" style="width: auto; display: inline-block;">
+                                    <option>Grade 10-A - History</option>
+                                    <option>Grade 9-B - History</option>
+                                </select>
+                                <button class="btn btn-primary" id="add-assignment-btn">Add Assignment</button>
+                            </div>
+                        </div>
+                        
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Homework 1 (10)</th>
+                                    <th>Midterm (50)</th>
+                                    <th>Project (40)</th>
+                                    <th>Total (100)</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Alex Johnson</td>
+                                    <td><input type="number" class="form-control" value="9" min="0" max="10"></td>
+                                    <td><input type="number" class="form-control" value="45" min="0" max="50"></td>
+                                    <td><input type="number" class="form-control" value="38" min="0" max="40"></td>
+                                    <td>92</td>
+                                    <td>92%</td>
+                                </tr>
+                                <tr>
+                                    <td>Maria Garcia</td>
+                                    <td><input type="number" class="form-control" value="10" min="0" max="10"></td>
+                                    <td><input type="number" class="form-control" value="48" min="0" max="50"></td>
+                                    <td><input type="number" class="form-control" value="36" min="0" max="40"></td>
+                                    <td>94</td>
+                                    <td>94%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Student Views -->
+                <!-- My Schedule (Student Only) -->
+                <section id="my-schedule-section" class="tab-content hidden student-only">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">My Schedule</h2>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Monday</th>
+                                    <th>Tuesday</th>
+                                    <th>Wednesday</th>
+                                    <th>Thursday</th>
+                                    <th>Friday</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>8:00 - 9:00</td>
+                                    <td>Mathematics</td>
+                                    <td>History</td>
+                                    <td>Science</td>
+                                    <td>Mathematics</td>
+                                    <td>English</td>
+                                </tr>
+                                <tr>
+                                    <td>9:00 - 10:00</td>
+                                    <td>Science</td>
+                                    <td>English</td>
+                                    <td>Mathematics</td>
+                                    <td>History</td>
+                                    <td>Science</td>
+                                </tr>
+                                <tr>
+                                    <td>10:30 - 11:30</td>
+                                    <td>History</td>
+                                    <td>Science</td>
+                                    <td>English</td>
+                                    <td>Science</td>
+                                    <td>Mathematics</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- My Grades (Student Only) -->
+                <section id="my-grades-section" class="tab-content hidden student-only">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">My Grades</h2>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Teacher</th>
+                                    <th>Assignment</th>
+                                    <th>Score</th>
+                                    <th>Max Score</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>History</td>
+                                    <td>Mr. Carter</td>
+                                    <td>Homework 1</td>
+                                    <td>9</td>
+                                    <td>10</td>
+                                    <td>90%</td>
+                                </tr>
+                                <tr>
+                                    <td>History</td>
+                                    <td>Mr. Carter</td>
+                                    <td>Midterm</td>
+                                    <td>45</td>
+                                    <td>50</td>
+                                    <td>90%</td>
+                                </tr>
+                                <tr>
+                                    <td>Mathematics</td>
+                                    <td>Ms. Roberts</td>
+                                    <td>Quiz 1</td>
+                                    <td>18</td>
+                                    <td>20</td>
+                                    <td>90%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- My Attendance (Student Only) -->
+                <section id="my-attendance-section" class="tab-content hidden student-only">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">My Attendance</h2>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Subject</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2023-10-16</td>
+                                    <td>History</td>
+                                    <td><span class="attendance-status status-present">Present</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2023-10-13</td>
+                                    <td>Mathematics</td>
+                                    <td><span class="attendance-status status-late">Late</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2023-10-11</td>
+                                    <td>Science</td>
+                                    <td><span class="attendance-status status-absent">Absent</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // DOM Elements
+        const loginPage = document.getElementById('login-page');
+        const app = document.getElementById('app');
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const roleOptions = document.querySelectorAll('.role-option');
+        const navTabs = document.querySelectorAll('.nav-tabs li');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const userRoleDisplay = document.getElementById('user-role-display');
+        const userNameDisplay = document.getElementById('user-name-display');
+
+        // Current user state
+        let currentUser = {
+            role: 'admin', // default role
+            name: 'Ms. Davis'
+        };
+
+        // Login functionality
+        loginBtn.addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username && password) {
+                // In a real app, you would validate credentials with a server
+                loginPage.classList.add('hidden');
+                app.classList.remove('hidden');
+                
+                // Update UI based on role
+                updateUIForRole(currentUser.role);
+            } else {
+                alert('Please enter both username and password');
+            }
+        });
+
+        // Logout functionality
+        logoutBtn.addEventListener('click', function() {
+            app.classList.add('hidden');
+            loginPage.classList.remove('hidden');
+            // Reset form
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        });
+
+        // Role selection
+        roleOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Update active role
+                roleOptions.forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update current user role
+                currentUser.role = this.getAttribute('data-role');
+                
+                // Update user name based on role
+                switch(currentUser.role) {
+                    case 'admin':
+                        currentUser.name = 'Ms. Davis';
+                        break;
+                    case 'teacher':
+                        currentUser.name = 'Mr. Carter';
+                        break;
+                    case 'student':
+                        currentUser.name = 'Alex Johnson';
+                        break;
+                }
+            });
+        });
+
+        // Navigation tabs
+        navTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Update active tab
+                navTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = this.getAttribute('data-tab');
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                document.getElementById(`${tabId}-section`).classList.remove('hidden');
+            });
+        });
+
+        // Update UI based on user role
+        function updateUIForRole(role) {
+            // Update user display
+            userRoleDisplay.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+            userNameDisplay.textContent = currentUser.name;
+            
+            // Show/hide role-specific elements
+            document.querySelectorAll('.admin-only').forEach(el => {
+                el.classList.add('hidden');
+            });
+            document.querySelectorAll('.teacher-only').forEach(el => {
+                el.classList.add('hidden');
+            });
+            document.querySelectorAll('.student-only').forEach(el => {
+                el.classList.add('hidden');
+            });
+            
+            // Show elements for current role
+            document.querySelectorAll(`.${role}-only`).forEach(el => {
+                el.classList.remove('hidden');
+            });
+            
+            // Update dashboard view
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            document.getElementById('teacher-dashboard').classList.add('hidden');
+            document.getElementById('student-dashboard').classList.add('hidden');
+            document.getElementById(`${role}-dashboard`).classList.remove('hidden');
+            
+            // Reset to dashboard tab
+            navTabs.forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-tab="dashboard"]`).classList.add('active');
+            tabContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById('dashboard-section').classList.remove('hidden');
+        }
+
+        // Initialize with admin role
+        updateUIForRole(currentUser.role);
+
+        // Sample functionality for buttons
+        document.getElementById('add-user-btn')?.addEventListener('click', function() {
+            alert('Add User functionality would open a form here');
+        });
+
+        document.getElementById('add-class-btn')?.addEventListener('click', function() {
+            alert('Add Class functionality would open a form here');
+        });
+
+        document.getElementById('mark-all-present')?.addEventListener('click', function() {
+            document.querySelectorAll('.attendance-status-select').forEach(select => {
+                select.value = 'present';
+            });
+        });
+
+        document.getElementById('save-attendance')?.addEventListener('click', function() {
+            alert('Attendance saved successfully!');
+        });
+
+        document.getElementById('add-assignment-btn')?.addEventListener('click', function() {
+            alert('Add Assignment functionality would open a form here');
+        });
+    </script>
+</body>
+</html>
